@@ -4,8 +4,10 @@ import util.ColorMap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class GridComponent extends JComponent {
+public class GridComponent extends JComponent implements Serializable {
+    private static final long serialVersionUID = -7925221370350593834L;
     private int row;
     private int col;
     private int number;
