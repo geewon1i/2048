@@ -26,16 +26,19 @@ public class GuestModeSelectionFrame extends JFrame {
 
         // 创建主面板
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 1, 10, 10));
+        panel.setLayout(new GridLayout(9, 1, 10, 10));
 
         // 创建单选按钮
         JRadioButton classicModeButton = new JRadioButton("Classic Mode");
+        JRadioButton timeModeButton = new JRadioButton("Time Mode");
         JRadioButton customModeButton = new JRadioButton("Custom Mode");
         classicModeButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        timeModeButton.setFont(new Font("Arial", Font.PLAIN, 20));
         customModeButton.setFont(new Font("Arial", Font.PLAIN, 20));
         // 创建按钮组，将单选按钮添加到按钮组中
         ButtonGroup group = new ButtonGroup();
         group.add(classicModeButton);
+        group.add(timeModeButton);
         group.add(customModeButton);
 
         // 默认选择第一个单选按钮
@@ -62,6 +65,7 @@ public class GuestModeSelectionFrame extends JFrame {
         // 添加单选按钮到面板
         panel.add(new JLabel());
         panel.add(classicModeButton);
+        panel.add(timeModeButton);
         panel.add(customModeButton);
         panel.add(gridSizeLabel);
         panel.add(gridSizeField);
@@ -70,6 +74,13 @@ public class GuestModeSelectionFrame extends JFrame {
         panel.add(confirmButton);
 
         classicModeButton.addActionListener(e -> {
+            gridSizeLabel.setVisible(false);
+            gridSizeField.setVisible(false);
+            targetNumberLabel.setVisible(false);
+            targetNumberField.setVisible(false);
+        });
+
+        timeModeButton.addActionListener(e -> {
             gridSizeLabel.setVisible(false);
             gridSizeField.setVisible(false);
             targetNumberLabel.setVisible(false);
@@ -92,7 +103,15 @@ public class GuestModeSelectionFrame extends JFrame {
                 GuestGameFrame gameFrame = new GuestGameFrame(700, 500);
                 gameFrame.setVisible(true);
                 // 添加切换到经典模式的逻辑
-            } else if (customModeButton.isSelected()) {
+            }else if (timeModeButton.isSelected()){
+                //限时模式
+
+
+
+
+
+            }
+            else if (customModeButton.isSelected()) {
                 String gridSizeText = gridSizeField.getText();
                 String targetNumberText = targetNumberField.getText();
                 if (gridSizeText.isEmpty() || targetNumberText.isEmpty()) {
