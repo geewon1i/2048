@@ -36,10 +36,37 @@ public class GuestGameFrame extends JFrame implements Serializable {
         this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
-        JButton button1 = createButton("up", new Point(520, 290), 70, 70);
-        JButton button2 = createButton("down", new Point(520, 370), 70, 70);
-        JButton button3 = createButton("left", new Point(440, 370), 70, 70);
-        JButton button4 = createButton("right", new Point(600, 370), 70, 70);
+        ImageIcon icon = new ImageIcon("src/view/icons8-up-arrow-70.png");
+        JButton button1 = new JButton(icon);
+        button1.setLocation(520, 290);
+        button1.setSize(70, 70);
+        button1.setContentAreaFilled(false);
+        button1.setBorderPainted(false);
+
+        ImageIcon icon2 = new ImageIcon("src\\view\\icons8-down-70.png");
+        JButton button2 = new JButton(icon2);
+        button2.setLocation(520, 370);
+        button2.setSize(70, 70);
+        button2.setContentAreaFilled(false);
+        button2.setBorderPainted(false);
+
+        ImageIcon icon3 = new ImageIcon("src\\view\\icons8-left-arrow-70.png");
+        JButton button3 = new JButton(icon3);
+        button3.setLocation(440, 370);
+        button3.setSize(70, 70);
+        button3.setContentAreaFilled(false);
+        button3.setBorderPainted(false);
+
+        ImageIcon icon4 = new ImageIcon("src/view/icons8-right-70.png");
+        JButton button4 = new JButton(icon4);
+        button4.setLocation(600, 370);
+        button4.setSize(70, 70);
+        button4.setContentAreaFilled(false);
+        button4.setBorderPainted(false);
+        add(button1);
+        add(button2);
+        add(button3);
+        add(button4);
 
         button1.addActionListener(e -> {
             gamePanel.doMoveUp();
@@ -70,6 +97,16 @@ public class GuestGameFrame extends JFrame implements Serializable {
         JButton button = new JButton(name);
         button.setLocation(location);
         button.setSize(width, height);
+        button.setBackground(new Color(135,206,250));
+//        button.setMargin(new Insets(0,0,0,0));//去除文字与按钮的边沿
+//        button.setBorder(new RoundBorder());//圆角矩形边界
+//        button.setContentAreaFilled(false);//取消原先画矩形的设置
+//        //setBorderPainted(false);//会导致按钮没有明显边界
+//        button.setFocusPainted(false);//去除文字周围的虚线框
+
+        button.setForeground(new Color(127,255,170));
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+        button.setFocusPainted(false); // 去除焦点框
         this.add(button);
         return button;
     }
