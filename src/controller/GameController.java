@@ -3,11 +3,14 @@ package controller;
 import model.GridNumber;
 import view.GamePanel;
 
+import java.io.Serializable;
+
 
 /**
  * This class is used for interactive with JButton in GameFrame.
  */
-public class GameController {
+public class GameController implements Serializable {
+    private static final long serialVersionUID = 6113042624164284648L;
     private GamePanel view;
     private GridNumber model;
 
