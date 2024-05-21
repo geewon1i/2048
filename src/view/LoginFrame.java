@@ -21,24 +21,24 @@ public class LoginFrame extends JFrame {
     }
 
     private void initview() {
-        try {
-            image= ImageIO.read(new File("src\\view\\triangle.png"));
-        }catch (IOException e){
-            e.getStackTrace();
-        }
-        setContentPane(new JPanel(){
-            @Override
-            protected void paintComponent(Graphics g){
-                super.paintComponent(g);
-                if (image != null) {
-                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-                } else {
-                    // Handle the case when image is null
-                    g.setColor(Color.RED);
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
-            }
-        });
+//        try {
+//            image= ImageIO.read(new File("src\\view\\triangle.png"));
+//        }catch (IOException e){
+//            e.getStackTrace();
+//        }
+//        setContentPane(new JPanel(){
+//            @Override
+//            protected void paintComponent(Graphics g){
+//                super.paintComponent(g);
+//                if (image != null) {
+//                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+//                } else {
+//                    // Handle the case when image is null
+//                    g.setColor(Color.RED);
+//                    g.fillRect(0, 0, getWidth(), getHeight());
+//                }
+//            }
+//        });
         JLabel usernameText = new JLabel("用户名");
         Font font1 = new Font("宋体", Font.BOLD, 22);
         usernameText.setFont(font1);
