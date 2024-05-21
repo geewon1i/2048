@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 /**
  * This class is to enable key events.
  *
  */
-public abstract class ListenerPanel extends JPanel {
+public abstract class ListenerPanel extends JPanel implements Serializable {
+    private static final long serialVersionUID = -5040750448393930848L;
     public ListenerPanel() {
         enableEvents(AWTEvent.KEY_EVENT_MASK);
         this.setFocusable(true);
