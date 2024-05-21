@@ -50,6 +50,7 @@ public void setModel(GridNumber model){
     }
 
     public void updateGridsNumber() {
+
         for (int i = 0; i < grids.length; i++) {
             for (int j = 0; j < grids[i].length; j++) {
                 grids[i][j].setNumber(model.getNumber(i, j));
@@ -58,7 +59,10 @@ public void setModel(GridNumber model){
         repaint();
     }
 
-
+public void updateSteps(){
+    this.steps=0;
+    this.stepLabel.setText(String.format("Step: %d", this.steps));
+}
     /**
      * Implement the abstract method declared in ListenerPanel.
      * Do move right.

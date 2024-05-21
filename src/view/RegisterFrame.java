@@ -1,14 +1,15 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 public class RegisterFrame extends JFrame {
 
+
+    private BufferedImage image;
 
     public RegisterFrame() {
         initJFrame();
@@ -27,8 +28,9 @@ public class RegisterFrame extends JFrame {
     }
 
     private void initview() {
+
         JLabel usernameText = new JLabel("用户名");
-        Font font1 = new Font("serif", Font.ITALIC, 22);
+        Font font1 = new Font("宋体", Font.BOLD, 22);
         usernameText.setFont(font1);
         usernameText.setLocation(180, 100);
         usernameText.setSize(100, 100);
@@ -40,7 +42,7 @@ public class RegisterFrame extends JFrame {
         this.getContentPane().add(username);
 
         JLabel passwordText = new JLabel("密码");
-        Font font2 = new Font("serif", Font.ITALIC, 22);
+        Font font2 = new Font("宋体", Font.BOLD, 22);
         passwordText.setFont(font2);
         passwordText.setLocation(180, 150);
         passwordText.setSize(100, 100);
@@ -53,7 +55,7 @@ public class RegisterFrame extends JFrame {
         this.getContentPane().add(password);
 
         JLabel passwordTextag = new JLabel("确认密码");
-        Font font3 = new Font("serif", Font.ITALIC, 22);
+        Font font3 = new Font("宋体", Font.BOLD, 22);
         passwordTextag.setFont(font3);
         passwordTextag.setLocation(180, 200);
         passwordTextag.setSize(100, 100);
@@ -65,9 +67,12 @@ public class RegisterFrame extends JFrame {
         passwordag.setSize(250, 30);
         this.getContentPane().add(passwordag);
 
-        JButton registerButton = new JButton("确认注册");
-        registerButton.setLocation(230, 300);
-        registerButton.setSize(100, 50);
+        ImageIcon icon2 = new ImageIcon("src\\view\\icons8-registered-trademark-64.png");
+        JButton registerButton = new JButton(icon2);
+        registerButton.setContentAreaFilled(false);
+        registerButton.setBorderPainted(false);
+        registerButton.setLocation(270, 270);
+        registerButton.setSize(150, 150);
         this.getContentPane().add(registerButton);
         registerButton.addActionListener(e -> {
             String usernamestr = username.getText();
@@ -111,7 +116,7 @@ public class RegisterFrame extends JFrame {
 
     public void writeString(String usenamestr, String passwordstr) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\94875\\IdeaProjects\\untitled4\\src\\userinfo.txt", true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src\\userinfo.txt", true));
             writer.write(usenamestr + "&" + passwordstr + "\n");
             writer.flush();
             writer.close();

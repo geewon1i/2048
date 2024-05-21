@@ -24,6 +24,7 @@ public class GameController implements Serializable {
         System.out.println("Do restart game here");
         model.initialNumbers();
         view.updateGridsNumber();
+        view.updateSteps();
     }
 
     //todo: add other methods such as loadGame, saveGame...

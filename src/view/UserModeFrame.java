@@ -1,12 +1,18 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class UserModeFrame extends JFrame {
     public String username;
+    private BufferedImage image;
+
     public UserModeFrame(){
         initJFrame();
 
@@ -20,12 +26,19 @@ public class UserModeFrame extends JFrame {
     private void initJFrame() {
         this.setTitle("Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 150);
+        setSize(300, 200);
         setLocationRelativeTo(null);
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1, 10, 10));
-        JButton newGameButton = new JButton("新游戏");
-        JButton continueGameButton = new JButton("继续游戏");
+        ImageIcon icon = new ImageIcon("src\\view\\icons8-game-controller-100.png");  // 替换为实际图标路径
+        JButton newGameButton = new JButton(icon);
+        newGameButton.setContentAreaFilled(false);
+        newGameButton.setBorderPainted(false);
+        ImageIcon icon1 = new ImageIcon("src\\view\\icons8-next-page-100.png");  // 替换为实际图标路径
+        JButton continueGameButton = new JButton(icon1);
+        continueGameButton.setContentAreaFilled(false);
+        continueGameButton.setBorderPainted(false);
 
         panel.add(newGameButton);
         panel.add(continueGameButton);

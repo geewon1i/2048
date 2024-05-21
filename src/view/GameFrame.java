@@ -3,10 +3,15 @@ package view;
 import controller.GameController;
 import util.ColorMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GameFrame extends JFrame {
+    private BufferedImage image;
     private String username;
 
     private GameController controller;
@@ -15,27 +20,83 @@ public class GameFrame extends JFrame {
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
-    public GameFrame(int width, int height,String username) {
-        this.username=username;
+
+    public GameFrame(int width, int height, String username) {
+
+        this.username = username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
         this.setSize(width, height);
+
+//        try {
+//            image= ImageIO.read(new File("src\\view\\triangle.png"));
+//        }catch (IOException e){
+//            e.getStackTrace();
+//        }
+//        setContentPane(new JPanel(){
+//            @Override
+//            protected void paintComponent(Graphics g){
+//                super.paintComponent(g);
+//                if (image != null) {
+//                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+//                } else {
+//                    // Handle the case when image is null
+//                    g.setColor(Color.RED);
+//                    g.fillRect(0, 0, getWidth(), getHeight());
+//                }
+//            }
+//        });
+
         ColorMap.InitialColorMap();
         gamePanel = new GamePanel((int) (this.getHeight() * 0.8));
         gamePanel.setLocation(this.getHeight() / 15, this.getWidth() / 15);
         this.add(gamePanel);
 
         this.controller = new GameController(gamePanel, gamePanel.getModel());
+
         this.restartBtn = createButton("Restart", new Point(500, 150), 110, 50);
+        restartBtn.setBorderPainted(false);
+
         JButton saveBtn = createButton("save", new Point(460, 220), 80, 50);
+        saveBtn.setBorderPainted(false);
+
         this.loadBtn = createButton("Load", new Point(570, 220), 80, 50);
+        loadBtn.setBorderPainted(false);
+
         this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
-        JButton button1 = createButton("up", new Point(520, 290), 70, 70);
-        JButton button2 = createButton("down", new Point(520, 370), 70, 70);
-        JButton button3 = createButton("left", new Point(440, 370), 70, 70);
-        JButton button4 = createButton("right", new Point(600, 370), 70, 70);
+        ImageIcon icon = new ImageIcon("src/view/icons8-up-arrow-70.png");
+        JButton button1 = new JButton(icon);
+        button1.setLocation(520, 290);
+        button1.setSize(70, 70);
+        button1.setContentAreaFilled(false);
+        button1.setBorderPainted(false);
+
+        ImageIcon icon2 = new ImageIcon("src\\view\\icons8-down-70.png");
+        JButton button2 = new JButton(icon2);
+        button2.setLocation(520, 370);
+        button2.setSize(70, 70);
+        button2.setContentAreaFilled(false);
+        button2.setBorderPainted(false);
+
+        ImageIcon icon3 = new ImageIcon("src\\view\\icons8-left-arrow-70.png");
+        JButton button3 = new JButton(icon3);
+        button3.setLocation(440, 370);
+        button3.setSize(70, 70);
+        button3.setContentAreaFilled(false);
+        button3.setBorderPainted(false);
+
+        ImageIcon icon4 = new ImageIcon("src/view/icons8-right-70.png");
+        JButton button4 = new JButton(icon4);
+        button4.setLocation(600, 370);
+        button4.setSize(70, 70);
+        button4.setContentAreaFilled(false);
+        button4.setBorderPainted(false);
+        add(button1);
+        add(button2);
+        add(button3);
+        add(button4);
 
         button1.addActionListener(e -> {
             gamePanel.doMoveUp();
@@ -61,10 +122,6 @@ public class GameFrame extends JFrame {
         });
 
 
-
-
-
-
         //todo: add other button here
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -75,6 +132,16 @@ public class GameFrame extends JFrame {
         JButton button = new JButton(name);
         button.setLocation(location);
         button.setSize(width, height);
+        button.setBackground(new Color(135,206,250));
+//        button.setMargin(new Insets(0,0,0,0));//去除文字与按钮的边沿
+//        button.setBorder(new RoundBorder());//圆角矩形边界
+//        button.setContentAreaFilled(false);//取消原先画矩形的设置
+//        //setBorderPainted(false);//会导致按钮没有明显边界
+//        button.setFocusPainted(false);//去除文字周围的虚线框
+
+        button.setForeground(new Color(127,255,170));
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+        button.setFocusPainted(false); // 去除焦点框
         this.add(button);
         return button;
     }

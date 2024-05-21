@@ -1,11 +1,17 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GuestModeFrame extends JFrame{
+    private BufferedImage image;
+
     public GuestModeFrame(){
         initJFrame();
 
@@ -16,11 +22,24 @@ public class GuestModeFrame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 150);
         setLocationRelativeTo(null);
-
+        try {
+            image= ImageIO.read(new File("src\\view\\triangle.png"));
+        }catch (IOException e){
+            e.getStackTrace();
+        }
+        setContentPane(new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(image,0,0,getWidth(),getHeight(),this);
+            }
+        });
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1, 10, 10));
-
-        JButton newGameButton = new JButton("新游戏");
+        ImageIcon icon = new ImageIcon("src\\view\\icons8-game-controller-100.png");  // 替换为实际图标路径
+        JButton newGameButton = new JButton(icon);
+        newGameButton.setContentAreaFilled(false);
+        newGameButton.setBorderPainted(false);
         panel.add(newGameButton);
 
         newGameButton.addActionListener(e -> {
