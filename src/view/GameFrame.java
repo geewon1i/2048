@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
+    private String username;
 
     private GameController controller;
     private JButton restartBtn;
@@ -14,8 +15,8 @@ public class GameFrame extends JFrame {
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
-
-    public GameFrame(int width, int height) {
+    public GameFrame(int width, int height,String username) {
+        this.username=username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
         this.setSize(width, height);
@@ -26,9 +27,28 @@ public class GameFrame extends JFrame {
 
         this.controller = new GameController(gamePanel, gamePanel.getModel());
         this.restartBtn = createButton("Restart", new Point(500, 150), 110, 50);
-        this.loadBtn = createButton("Load", new Point(500, 220), 110, 50);
-        this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 50), 180, 50);
+        JButton saveBtn = createButton("save", new Point(460, 220), 80, 50);
+        this.loadBtn = createButton("Load", new Point(570, 220), 80, 50);
+        this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
         gamePanel.setStepLabel(stepLabel);
+
+        JButton button1 = createButton("up", new Point(520, 290), 70, 70);
+        JButton button2 = createButton("down", new Point(520, 370), 70, 70);
+        JButton button3 = createButton("left", new Point(440, 370), 70, 70);
+        JButton button4 = createButton("right", new Point(600, 370), 70, 70);
+
+        button1.addActionListener(e -> {
+            gamePanel.doMoveUp();
+        });
+        button2.addActionListener(e -> {
+            gamePanel.doMoveDown();
+        });
+        button3.addActionListener(e -> {
+            gamePanel.doMoveLeft();
+        });
+        button4.addActionListener(e -> {
+            gamePanel.doMoveRight();
+        });
 
         this.restartBtn.addActionListener(e -> {
             controller.restartGame();
@@ -39,6 +59,12 @@ public class GameFrame extends JFrame {
             System.out.println(string);
             gamePanel.requestFocusInWindow();//enable key listener
         });
+
+
+
+
+
+
         //todo: add other button here
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
