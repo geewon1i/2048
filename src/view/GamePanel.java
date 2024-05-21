@@ -4,9 +4,11 @@ import model.GridNumber;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 
-public class GamePanel extends ListenerPanel {
+public class GamePanel extends ListenerPanel implements Serializable {
+    private static final long serialVersionUID = -567330989481496467L;
     private final int COUNT = 4;
     private GridComponent[][] grids;
 
@@ -27,7 +29,9 @@ public class GamePanel extends ListenerPanel {
         initialGame();
 
     }
-
+public void setModel(GridNumber model){
+        this.model=model;
+}
     public GridNumber getModel() {
         return model;
     }
