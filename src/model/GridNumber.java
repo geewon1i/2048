@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 
-public class GridNumber {
+public class GridNumber implements Serializable {
+    private static final long serialVersionUID = 6113042624164284648L;
     private final int X_COUNT;//line
     private final int Y_COUNT;//column
 
@@ -26,8 +28,8 @@ public class GridNumber {
     }
     public void generate(){
         int i,j,val = 0;
-        switch (random.nextInt(2)){
-            case 0:val=1;break;
+        switch (random.nextInt(1,3)){
+
             case 1:val=2;break;
             case 2:val=4;break;
         }
@@ -37,6 +39,7 @@ public class GridNumber {
         }
     }
     public void initialNumbers() {
+        this.numbers = new int[this.X_COUNT][this.Y_COUNT];
         int cnt=5;
         generate(2);
         generate(4);
