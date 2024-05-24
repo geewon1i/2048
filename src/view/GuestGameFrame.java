@@ -18,15 +18,18 @@ public class GuestGameFrame extends JFrame implements Serializable {
     transient private JButton loadBtn;
 
     transient private JLabel stepLabel;
+    transient private JLabel scoreLabel;
     transient private GamePanel gamePanel;
+    private int game_type;
 
-    public GuestGameFrame(int width, int height) {
+    public GuestGameFrame(int width, int height,int game_type,int goal,int COUNT) {
+        this.game_type=game_type;
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
         this.setSize(width, height);
         ColorMap.InitialColorMap();
-        gamePanel = new GamePanel((int) (this.getHeight() * 0.8));
+        gamePanel = new GamePanel((int) (this.getHeight() * 0.8),COUNT,goal);
         gamePanel.setLocation(this.getHeight() / 15, this.getWidth() / 15);
         this.add(gamePanel);
 
@@ -34,30 +37,31 @@ public class GuestGameFrame extends JFrame implements Serializable {
         this.restartBtn = createButton("Restart", new Point(500, 150), 110, 50);
 
         this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
+        this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 90), 180, 50);
         gamePanel.setStepLabel(stepLabel);
-
-        ImageIcon icon = new ImageIcon("src/view/icons8-up-arrow-70.png");
+        gamePanel.setScoreLabel(scoreLabel);
+        ImageIcon icon = new ImageIcon("view/icons8-up-arrow-70.png");
         JButton button1 = new JButton(icon);
         button1.setLocation(520, 290);
         button1.setSize(70, 70);
         button1.setContentAreaFilled(false);
         button1.setBorderPainted(false);
 
-        ImageIcon icon2 = new ImageIcon("src\\view\\icons8-down-70.png");
+        ImageIcon icon2 = new ImageIcon("view\\icons8-down-70.png");
         JButton button2 = new JButton(icon2);
         button2.setLocation(520, 370);
         button2.setSize(70, 70);
         button2.setContentAreaFilled(false);
         button2.setBorderPainted(false);
 
-        ImageIcon icon3 = new ImageIcon("src\\view\\icons8-left-arrow-70.png");
+        ImageIcon icon3 = new ImageIcon("view\\icons8-left-arrow-70.png");
         JButton button3 = new JButton(icon3);
         button3.setLocation(440, 370);
         button3.setSize(70, 70);
         button3.setContentAreaFilled(false);
         button3.setBorderPainted(false);
 
-        ImageIcon icon4 = new ImageIcon("src/view/icons8-right-70.png");
+        ImageIcon icon4 = new ImageIcon("view/icons8-right-70.png");
         JButton button4 = new JButton(icon4);
         button4.setLocation(600, 370);
         button4.setSize(70, 70);
