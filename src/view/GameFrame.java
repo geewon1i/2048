@@ -20,35 +20,38 @@ public class GameFrame extends JFrame {
 
     private JLabel stepLabel;
     private GamePanel gamePanel;
+    int game_type;//0classic 1time 2custom
 
-    public GameFrame(int width, int height, String username) {
+    public GameFrame(int width, int height, String username,int game_type) {
 
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
         this.setSize(width, height);
 
-//        try {
-//            image= ImageIO.read(new File("src\\view\\triangle.png"));
-//        }catch (IOException e){
-//            e.getStackTrace();
-//        }
-//        setContentPane(new JPanel(){
-//            @Override
-//            protected void paintComponent(Graphics g){
-//                super.paintComponent(g);
-//                if (image != null) {
-//                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-//                } else {
-//                    // Handle the case when image is null
-//                    g.setColor(Color.RED);
-//                    g.fillRect(0, 0, getWidth(), getHeight());
-//                }
-//            }
-//        });
+        try {
+            image= ImageIO.read(new File("view\\triangle.png"));
+        }catch (IOException e){
+            e.getStackTrace();
+        }
+        setContentPane(new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                if (image != null) {
+                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // Handle the case when image is null
+                    g.setColor(Color.RED);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        });
 
         ColorMap.InitialColorMap();
-        gamePanel = new GamePanel((int) (this.getHeight() * 0.8));
+        if(game_type==0)gamePanel = new GamePanel((int) (this.getHeight() * 0.8));
+        if(game_type==1);
+        if(game_type==2)gamePanel = new GamePanel((int) (this.getHeight() * 0.8));
         gamePanel.setLocation(this.getHeight() / 15, this.getWidth() / 15);
         this.add(gamePanel);
 
