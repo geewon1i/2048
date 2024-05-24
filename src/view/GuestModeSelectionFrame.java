@@ -100,7 +100,7 @@ public class GuestModeSelectionFrame extends JFrame {
         confirmButton.addActionListener(e -> {
             if (classicModeButton.isSelected()) {
                 this.dispose();
-                GuestGameFrame gameFrame = new GuestGameFrame(700, 500);
+                GuestGameFrame gameFrame = new GuestGameFrame(700, 500,0,2048,4);
                 gameFrame.setVisible(true);
                 // 添加切换到经典模式的逻辑
             }else if (timeModeButton.isSelected()){
@@ -117,6 +117,9 @@ public class GuestModeSelectionFrame extends JFrame {
                 if (gridSizeText.isEmpty() || targetNumberText.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "请输入大小或目标数字");
                 } else {
+                    this.dispose();
+                    GuestGameFrame gameFrame = new GuestGameFrame(700, 500,2,Integer.parseInt(targetNumberText),Integer.parseInt(gridSizeText));
+                    gameFrame.setVisible(true);
                     // 创建自定义的游戏
                 }
             }
