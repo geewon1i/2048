@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Timer;
 
 public class GridNumber implements Serializable {
     private static final long serialVersionUID = 6113042624164284648L;
@@ -10,7 +11,7 @@ public class GridNumber implements Serializable {
     private final int Y_COUNT;//column
 
     private int[][] numbers;
-
+    private int goal;
     static Random random = new Random();
 
     public GridNumber(int xCount, int yCount) {
@@ -45,7 +46,8 @@ public class GridNumber implements Serializable {
         generate(4);
     }
     //todo: finish the method of four direction moving.
-    public void moveRight() {
+    public int moveRight() {
+        int ans=0;
         for (int i=0;i<X_COUNT;++i){
             int cur=Y_COUNT-1;//current index
             for (int j=cur-1;j>=0;--j){
@@ -56,9 +58,9 @@ public class GridNumber implements Serializable {
                     continue;
                 }
                 if(numbers[i][j]==numbers[i][cur]){
-                    numbers[i][cur]*=2;
+                    ans+=numbers[j][i]*2;
+                    numbers[i][cur--]*=2;
                     numbers[i][j]=0;
-                    cur--;
                 }
                 else {
                     int t=numbers[i][j];
@@ -68,8 +70,10 @@ public class GridNumber implements Serializable {
             }
         }
         generate();
+        return ans;
     }
-    public void moveLeft(){
+    public int moveLeft(){
+        int ans=0;
         for (int i=0;i<X_COUNT;++i){
             int cur=0;//current index
             for (int j=cur+1;j<Y_COUNT;++j){
@@ -80,6 +84,7 @@ public class GridNumber implements Serializable {
                     continue;
                 }
                 if(numbers[i][j]==numbers[i][cur]){
+                    ans+=numbers[i][j]*2;
                     numbers[i][cur++]*=2;
                     numbers[i][j]=0;
                 }
@@ -91,8 +96,10 @@ public class GridNumber implements Serializable {
             }
         }
         generate();
+        return ans;
     }
-    public void moveUp(){
+    public int moveUp(){
+        int ans=0;
         for (int i=0;i<Y_COUNT;++i){
             int cur=0;
             for(int j=1;j<X_COUNT;++j){
@@ -103,6 +110,7 @@ public class GridNumber implements Serializable {
                     continue;
                 }
                 if(numbers[j][i]==numbers[cur][i]){
+                    ans+=numbers[j][i]*2;
                     numbers[cur++][i]*=2;
                     numbers[j][i]=0;
                 }
@@ -114,8 +122,10 @@ public class GridNumber implements Serializable {
             }
         }
         generate();
+        return ans;
     }
-    public void moveDown(){
+    public int moveDown(){
+        int ans=0;
         for (int i=0;i<Y_COUNT;++i){
             int cur=X_COUNT-1;
             for(int j=cur-1;j>=0;--j){
@@ -126,6 +136,7 @@ public class GridNumber implements Serializable {
                     continue;
                 }
                 if(numbers[j][i]==numbers[cur][i]){
+                    ans+=numbers[j][i]*2;
                     numbers[cur--][i]*=2;
                     numbers[j][i]=0;
                 }
@@ -137,6 +148,7 @@ public class GridNumber implements Serializable {
             }
         }
         generate();
+        return ans;
     }
     public int getNumber(int i, int j) {
         return numbers[i][j];
