@@ -105,11 +105,9 @@ public class GuestModeSelectionFrame extends JFrame {
                 // 添加切换到经典模式的逻辑
             }else if (timeModeButton.isSelected()){
                 //限时模式
-
-
-
-
-
+                this.dispose();
+                GuestGameFrame gameFrame = new GuestGameFrame(700, 500,1,2048,4);
+                gameFrame.setVisible(true);
             }
             else if (customModeButton.isSelected()) {
                 String gridSizeText = gridSizeField.getText();
