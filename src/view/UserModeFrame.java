@@ -61,7 +61,7 @@ public class UserModeFrame extends JFrame {
                     ois = new ObjectInputStream(new FileInputStream("src\\"+username+".txt"));
                     GamePanel gamePanel1 = (GamePanel) ois.readObject();
                     ois.close();
-                    GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel1,0,2048,4);
+                    GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel1,0,2048,4,gamePanel1.getTime());
                     gameFrame.setVisible(true);
                     this.dispose();
                 } catch (IOException ex) {

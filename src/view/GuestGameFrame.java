@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import util.ColorMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -14,6 +15,7 @@ import java.util.TimerTask;
 
 public class GuestGameFrame extends JFrame implements Serializable {
     private static final long serialVersionUID = 6113042624164284648L;
+    private Image image;
     transient private String username;
     transient private GameController controller;
     transient private JButton restartBtn;
@@ -24,68 +26,112 @@ public class GuestGameFrame extends JFrame implements Serializable {
     transient private JLabel timeLabel;
     transient private GamePanel gamePanel;
 
-    void clock(int timeLast){
-        java.util.Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            int seconds = timeLast;
+    private TimerTask task;
+    private Timer timer;
+    private int time;
+    public GuestGameFrame(int width, int height,int game_type,int goal,int COUNT,int limitTime) {
+        timer=new Timer();
+        task= new TimerTask() {
             @Override
             public void run() {
-                if (seconds > 0) {
-                    timeLabel.setText(String.format("Time:%d", seconds));
-                    seconds--;
+                time++;
+                if (game_type == 1) {
+                    System.out.println(limitTime);
+                    if (limitTime - time > 0)
+                        timeLabel.setText(String.format("Last time: %d",limitTime - time));
+                    else {
+                        JOptionPane.showMessageDialog(null, "游戏结束", "2048", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
                 } else {
-                    System.out.println("时间到！游戏结束。");
-                    timer.cancel();
-                    System.exit(0);
+                    timeLabel.setText(String.format("Time: %d", time));
                 }
             }
         };
-        timer.scheduleAtFixedRate(task, 1, 1000);
-    }
-    public GuestGameFrame(int width, int height,int game_type,int goal,int COUNT) {
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
         this.setSize(width, height);
+
+
+        try {
+            image = ImageIO.read(new File("src/view/DCS_COM_e019_lp.gif"));
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+        setContentPane(new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (image != null) {
+                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // Handle the case when image is null
+                    g.setColor(Color.RED);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        });
+        this.setLayout(null);
+
         ColorMap.InitialColorMap();
         gamePanel = new GamePanel((int) (this.getHeight() * 0.8),COUNT,goal);
         gamePanel.setLocation(this.getHeight() / 15, this.getWidth() / 15);
         this.add(gamePanel);
 
         this.controller = new GameController(gamePanel, gamePanel.getModel());
-        this.restartBtn = createButton("Restart", new Point(500, 150), 110, 50);
+
+        ImageIcon icon = new ImageIcon("src/view/icons8-restart-70.png");
+        JButton button = new JButton(icon);
+        button.setLocation(new Point(520, 150));
+        button.setSize(70, 70);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false); // 去除焦点框
+        this.add(button);
+        this.restartBtn = button;
+
+
+
+
+
+
 
         this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
-        this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 90), 180, 50);
-        if(game_type==1){
-            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 180), 180, 50);
-            gamePanel.setTimeLabel(timeLabel);
-            clock(30);
+        this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 40), 180, 50);
+        if(game_type==1)
+            this.timeLabel = createLabel("LastTime", new Font("serif", Font.ITALIC, 22), new Point(480, 80), 180, 50);
+        else {
+            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 80), 180, 50);
+            time=limitTime;
         }
+        timer.scheduleAtFixedRate(task,1,1000);
+        gamePanel.setTimeLabel(timeLabel);
         gamePanel.setStepLabel(stepLabel);
         gamePanel.setScoreLabel(scoreLabel);
-        ImageIcon icon = new ImageIcon("view/icons8-up-arrow-70.png");
-        JButton button1 = new JButton(icon);
+
+        ImageIcon icon1 = new ImageIcon("src/view/icons8-up-arrow-70.png");
+        JButton button1 = new JButton(icon1);
         button1.setLocation(520, 290);
         button1.setSize(70, 70);
         button1.setContentAreaFilled(false);
         button1.setBorderPainted(false);
 
-        ImageIcon icon2 = new ImageIcon("view\\icons8-down-70.png");
+        ImageIcon icon2 = new ImageIcon("src\\view\\icons8-down-70.png");
         JButton button2 = new JButton(icon2);
         button2.setLocation(520, 370);
         button2.setSize(70, 70);
         button2.setContentAreaFilled(false);
         button2.setBorderPainted(false);
 
-        ImageIcon icon3 = new ImageIcon("view\\icons8-left-arrow-70.png");
+        ImageIcon icon3 = new ImageIcon("src\\view\\icons8-left-arrow-70.png");
         JButton button3 = new JButton(icon3);
         button3.setLocation(440, 370);
         button3.setSize(70, 70);
         button3.setContentAreaFilled(false);
         button3.setBorderPainted(false);
 
-        ImageIcon icon4 = new ImageIcon("view/icons8-right-70.png");
+        ImageIcon icon4 = new ImageIcon("src/view/icons8-right-70.png");
         JButton button4 = new JButton(icon4);
         button4.setLocation(600, 370);
         button4.setSize(70, 70);
@@ -98,22 +144,32 @@ public class GuestGameFrame extends JFrame implements Serializable {
 
         button1.addActionListener(e -> {
             gamePanel.doMoveUp();
+            gamePanel.requestFocusInWindow();//enable key listener
         });
         button2.addActionListener(e -> {
             gamePanel.doMoveDown();
+            gamePanel.requestFocusInWindow();//enable key listener
         });
         button3.addActionListener(e -> {
             gamePanel.doMoveLeft();
+            gamePanel.requestFocusInWindow();//enable key listener
         });
         button4.addActionListener(e -> {
             gamePanel.doMoveRight();
+            gamePanel.requestFocusInWindow();//enable key listener
         });
+
 
 
         this.restartBtn.addActionListener(e -> {
+            if(game_type==1)timeLabel.setText(String.format("Last time: %d",limitTime - (time=0)));
+            else timeLabel.setText(String.format("Time: %d",time=0));
             controller.restartGame();
             gamePanel.requestFocusInWindow();//enable key listener
         });
+
+
+
 
         //todo: add other button here
         this.setLocationRelativeTo(null);

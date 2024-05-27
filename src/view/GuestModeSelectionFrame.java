@@ -19,14 +19,14 @@ public class GuestModeSelectionFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 设置框架大小
-        setSize(500, 300);
+        setSize(500, 400);
 
         // 设置框架居中显示
         setLocationRelativeTo(null);
 
         // 创建主面板
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(9, 1, 10, 10));
+        panel.setLayout(new GridLayout(11, 1, 10, 10));
 
         // 创建单选按钮
         JRadioButton classicModeButton = new JRadioButton("Classic Mode");
@@ -49,6 +49,10 @@ public class GuestModeSelectionFrame extends JFrame {
         confirmButton.setFont(new Font("Arial", Font.BOLD, 20));
 
         // 创建输入字段和标签
+        JLabel timeLabel = new JLabel("Time :");
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JTextField timeLabelField = new JTextField();
+        timeLabelField.setFont(new Font("Arial", Font.PLAIN, 16));
         JLabel gridSizeLabel = new JLabel("Grid Size:");
         gridSizeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         JTextField gridSizeField = new JTextField();
@@ -57,6 +61,8 @@ public class GuestModeSelectionFrame extends JFrame {
         targetNumberLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         JTextField targetNumberField = new JTextField();
         targetNumberField.setFont(new Font("Arial", Font.PLAIN, 16));
+        timeLabelField.setVisible(false);
+        timeLabel.setVisible(false);
         gridSizeLabel.setVisible(false);
         gridSizeField.setVisible(false);
         targetNumberLabel.setVisible(false);
@@ -66,6 +72,8 @@ public class GuestModeSelectionFrame extends JFrame {
         panel.add(new JLabel());
         panel.add(classicModeButton);
         panel.add(timeModeButton);
+        panel.add(timeLabel);
+        panel.add(timeLabelField);
         panel.add(customModeButton);
         panel.add(gridSizeLabel);
         panel.add(gridSizeField);
@@ -74,6 +82,8 @@ public class GuestModeSelectionFrame extends JFrame {
         panel.add(confirmButton);
 
         classicModeButton.addActionListener(e -> {
+            timeLabel.setVisible(false);
+            timeLabelField.setVisible(false);
             gridSizeLabel.setVisible(false);
             gridSizeField.setVisible(false);
             targetNumberLabel.setVisible(false);
@@ -81,6 +91,8 @@ public class GuestModeSelectionFrame extends JFrame {
         });
 
         timeModeButton.addActionListener(e -> {
+            timeLabel.setVisible(true);
+            timeLabelField.setVisible(true);
             gridSizeLabel.setVisible(false);
             gridSizeField.setVisible(false);
             targetNumberLabel.setVisible(false);
@@ -90,6 +102,8 @@ public class GuestModeSelectionFrame extends JFrame {
         customModeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                timeLabel.setVisible(false);
+                timeLabelField.setVisible(false);
                 gridSizeLabel.setVisible(true);
                 gridSizeField.setVisible(true);
                 targetNumberLabel.setVisible(true);
@@ -100,13 +114,14 @@ public class GuestModeSelectionFrame extends JFrame {
         confirmButton.addActionListener(e -> {
             if (classicModeButton.isSelected()) {
                 this.dispose();
-                GuestGameFrame gameFrame = new GuestGameFrame(700, 500,0,2048,4);
+                GuestGameFrame gameFrame = new GuestGameFrame(700, 500,0,2048,4,0);
                 gameFrame.setVisible(true);
                 // 添加切换到经典模式的逻辑
             }else if (timeModeButton.isSelected()){
                 //限时模式
+                String time=timeLabelField.getText();
                 this.dispose();
-                GuestGameFrame gameFrame = new GuestGameFrame(700, 500,1,2048,4);
+                GuestGameFrame gameFrame = new GuestGameFrame(700, 500,1,2048,4,Integer.parseInt(time));
                 gameFrame.setVisible(true);
             }
             else if (customModeButton.isSelected()) {
@@ -116,7 +131,7 @@ public class GuestModeSelectionFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, "请输入大小或目标数字");
                 } else {
                     this.dispose();
-                    GuestGameFrame gameFrame = new GuestGameFrame(700, 500,2,Integer.parseInt(targetNumberText),Integer.parseInt(gridSizeText));
+                    GuestGameFrame gameFrame = new GuestGameFrame(700, 500,2,Integer.parseInt(targetNumberText),Integer.parseInt(gridSizeText),0);
                     gameFrame.setVisible(true);
                     // 创建自定义的游戏
                 }

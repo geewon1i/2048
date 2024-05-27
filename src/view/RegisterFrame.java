@@ -97,7 +97,7 @@ public class RegisterFrame extends JFrame {
             } else {
                 writeString(usernamestr, passwordstr1);
                 this.dispose();
-                JOptionPane.showMessageDialog(this, "注册成功！", "注册", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "注册成功！", "注册", JOptionPane.INFORMATION_MESSAGE);
                 LoginFrame loginFrame = new LoginFrame();
                 loginFrame.setVisible(true);
             }

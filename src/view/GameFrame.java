@@ -19,37 +19,40 @@ public class GameFrame extends JFrame implements Serializable {
     private JButton restartBtn;
     private JButton loadBtn;
 
-
+    private int game_type;
     transient private JLabel stepLabel;
     transient private JLabel scoreLabel;
     transient private JLabel timeLabel;
     private GamePanel gamePanel;
+    private TimerTask task;
+    private Timer timer;
+    private int time;
+    int limitTime;
 
-    void clock(int timeLast){
-        java.util.Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            int seconds = timeLast;
+    public GameFrame(int width, int height, String username, int game_type, int goal, int COUNT, int limitTime) {
+        timer = new Timer();
+        task = new TimerTask() {
             @Override
             public void run() {
-                if (seconds > 0) {
-                    timeLabel.setText(String.format("Time:%d", seconds));
-                    seconds--;
+                time++;
+                if (game_type == 1) {
+                    System.out.println(limitTime);
+                    if (limitTime - time > 0)
+                        timeLabel.setText(String.format("Last time: %d", limitTime - time));
+                    else{
+                        JOptionPane.showMessageDialog(null, "游戏结束", "2048", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
                 } else {
-                    System.out.println("时间到！游戏结束。");
-                    timer.cancel();
-                    System.exit(0);
+                    timeLabel.setText(String.format("Time: %d", time));
                 }
             }
         };
-        timer.scheduleAtFixedRate(task, 1, 1000);
-    }
-    public GameFrame(int width, int height, String username,int game_type,int goal ,int COUNT) {
-
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
         this.setSize(width, height);
-
+        this.game_type = game_type;
 
         try {
             image = ImageIO.read(new File("src/view/DCS_COM_e019_lp.gif"));
@@ -72,7 +75,7 @@ public class GameFrame extends JFrame implements Serializable {
         this.setLayout(null);
 
         ColorMap.InitialColorMap();
-        gamePanel = new GamePanel((int) (this.getHeight() * 0.8),COUNT,goal);
+        gamePanel = new GamePanel((int) (this.getHeight() * 0.8), COUNT, goal);
         gamePanel.setLocation(this.getHeight() / 15, this.getWidth() / 15);
         this.add(gamePanel);
 
@@ -89,34 +92,80 @@ public class GameFrame extends JFrame implements Serializable {
         this.restartBtn = button;
 
 
-        ImageIcon icon12 = new ImageIcon("src/view/icons8-save-60.png");
-        JButton button12 = new JButton(icon12);
-        button12.setLocation(new Point(470, 220));
-        button12.setSize(65, 65);
-        button12.setContentAreaFilled(false);
-        button12.setBorderPainted(false);
-        JButton saveBtn = button12;
-        button12.setFocusPainted(false); // 去除焦点框
-        this.add(button12);
+        if (game_type == 0) {
+            ImageIcon icon12 = new ImageIcon("src/view/icons8-save-60.png");
+            JButton button12 = new JButton(icon12);
+            button12.setLocation(new Point(470, 220));
+            button12.setSize(65, 65);
+            button12.setContentAreaFilled(false);
+            button12.setBorderPainted(false);
+            JButton saveBtn = button12;
+            button12.setFocusPainted(false); // 去除焦点框
+            this.add(button12);
 
-        ImageIcon icon123 = new ImageIcon("src/view/icons8-load-60.png");
-        JButton button123 = new JButton(icon123);
-        button123.setLocation(new Point(570, 220));
-        button123.setSize(65, 65);
-        button123.setContentAreaFilled(false);
-        button123.setBorderPainted(false);
-        button123.setFocusPainted(false); // 去除焦点框
-        this.add(button123);
-        this.loadBtn = button123;
+            saveBtn.addActionListener(e -> {
+                File file = new File("src\\" + username + ".txt");
+                try {
+                    file.createNewFile();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                try {
+                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("src\\" + username + ".txt"));
+                    gamePanel.setTime(time);
+                    oos.writeObject(this.gamePanel);
+                    oos.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                gamePanel.requestFocusInWindow();//enable key listener
+            });
+        }
+
+        if (game_type == 0) {
+            ImageIcon icon123 = new ImageIcon("src/view/icons8-load-60.png");
+            JButton button123 = new JButton(icon123);
+            button123.setLocation(new Point(570, 220));
+            button123.setSize(65, 65);
+            button123.setContentAreaFilled(false);
+            button123.setBorderPainted(false);
+            button123.setFocusPainted(false); // 去除焦点框
+            this.add(button123);
+            this.loadBtn = button123;
+            this.loadBtn.addActionListener(e -> {
+                String string = JOptionPane.showInputDialog(this, "Input path:");
+                System.out.println(string);
+                ObjectInputStream ois = null;
+                try {
+                    ois = new ObjectInputStream(new FileInputStream(string));
+                    GamePanel gamePanel1 = (GamePanel) ois.readObject();
+
+                    ois.close();
+                    GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel1, 0, 2048, 4, gamePanel1.getTime());
+
+                    gameFrame.setVisible(true);
+                    this.dispose();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+
+            });
+        }
 
 
         this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
-        this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 90), 180, 50);
-        if(game_type==1){
-            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 180), 180, 50);
-            gamePanel.setTimeLabel(timeLabel);
-            clock(30);
+        this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 40), 180, 50);
+        if (game_type == 1)
+            this.timeLabel = createLabel("LastTime", new Font("serif", Font.ITALIC, 22), new Point(480, 80), 180, 50);
+        else {
+            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 80), 180, 50);
+            time = limitTime;
         }
+        timer.scheduleAtFixedRate(task, 1, 1000);
+        gamePanel.setTimeLabel(timeLabel);
         gamePanel.setStepLabel(stepLabel);
         gamePanel.setScoreLabel(scoreLabel);
 
@@ -169,47 +218,12 @@ public class GameFrame extends JFrame implements Serializable {
             gamePanel.requestFocusInWindow();//enable key listener
         });
 
-        saveBtn.addActionListener(e -> {
-            File file = new File("src\\" + username + ".txt");
-            try {
-                file.createNewFile();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            try {
-                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("src\\" + username + ".txt"));
-                oos.writeObject(this.gamePanel);
-                oos.close();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            gamePanel.requestFocusInWindow();//enable key listener
-        });
 
         this.restartBtn.addActionListener(e -> {
+            if (game_type == 1) timeLabel.setText(String.format("Last time: %d", limitTime - (time = 0)));
+            else timeLabel.setText(String.format("Time: %d", time = 0));
             controller.restartGame();
             gamePanel.requestFocusInWindow();//enable key listener
-        });
-
-        this.loadBtn.addActionListener(e -> {
-            String string = JOptionPane.showInputDialog(this, "Input path:");
-            System.out.println(string);
-            ObjectInputStream ois = null;
-            try {
-                ois = new ObjectInputStream(new FileInputStream(string));
-                GamePanel gamePanel1 = (GamePanel) ois.readObject();
-                ois.close();
-                GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel1,0,2048,4);
-                gameFrame.setVisible(true);
-                this.dispose();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-
-
-
         });
 
 
@@ -218,7 +232,25 @@ public class GameFrame extends JFrame implements Serializable {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public GameFrame(int width, int height, String username, GamePanel gamePanel,int game_type,int goal ,int COUNT) {
+    public GameFrame(int width, int height, String username, GamePanel gamePanel, int game_type, int goal, int COUNT, int limitTime) {
+        timer = new Timer();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                if (game_type == 1) {
+                    System.out.println(limitTime);
+                    if (limitTime - time > 0)
+                        timeLabel.setText(String.format("Last time: %d", limitTime - time));
+                    else {
+                        JOptionPane.showMessageDialog(null, "游戏结束", "2048", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
+                } else {
+                    timeLabel.setText(String.format("Time: %d", time));
+                }
+            }
+        };
 
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
@@ -284,13 +316,17 @@ public class GameFrame extends JFrame implements Serializable {
         this.add(button123);
         this.loadBtn = button123;
 
-        this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
-        this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 90), 180, 50);
-        if(game_type==1){
-            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 180), 180, 50);
-            gamePanel.setTimeLabel(timeLabel);
-            clock(30);
+        this.stepLabel = createLabel(String.format("Step:%d", gamePanel.getSteps()), new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
+        this.scoreLabel = createLabel(String.format("Score:%d", gamePanel.getScore()), new Font("serif", Font.ITALIC, 22), new Point(480, 40), 180, 50);
+
+        if (game_type == 1)
+            this.timeLabel = createLabel("LastTime", new Font("serif", Font.ITALIC, 22), new Point(480, 80), 180, 50);
+        else {
+            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 80), 180, 50);
+            time = limitTime;
         }
+        timer.scheduleAtFixedRate(task, 1, 1000);
+        gamePanel.setTimeLabel(timeLabel);
         gamePanel.setStepLabel(stepLabel);
         gamePanel.setScoreLabel(scoreLabel);
         stepLabel.setFont(new Font("serif", Font.ITALIC, 22));
@@ -365,10 +401,11 @@ public class GameFrame extends JFrame implements Serializable {
         });
 
         this.restartBtn.addActionListener(e -> {
+            if (game_type == 1) timeLabel.setText(String.format("Last time: %d", limitTime - (time = 0)));
+            else timeLabel.setText(String.format("Time: %d", time = 0));
             controller.restartGame();
             gamePanel.requestFocusInWindow();//enable key listener
         });
-
         this.loadBtn.addActionListener(e -> {
             String string = JOptionPane.showInputDialog(this, "Input path:");
             System.out.println(string);
@@ -377,7 +414,7 @@ public class GameFrame extends JFrame implements Serializable {
                 ois = new ObjectInputStream(new FileInputStream(string));
                 GamePanel gamePanel1 = (GamePanel) ois.readObject();
                 ois.close();
-                GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel,0,2048,4);
+                GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel1, 0, 2048, 4, gamePanel1.getTime());
                 gameFrame.setVisible(true);
                 this.dispose();
             } catch (IOException ex) {
@@ -385,8 +422,6 @@ public class GameFrame extends JFrame implements Serializable {
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
-
-
             gamePanel.requestFocusInWindow();//enable key listener
         });
 
@@ -423,14 +458,6 @@ public class GameFrame extends JFrame implements Serializable {
         this.add(label);
         return label;
     }
-    public void setBg(){
-        ((JPanel)this.getContentPane()).setOpaque(false);
-        ImageIcon img = new ImageIcon
-                ("D:\\picture\\miracle.jpg");
-        JLabel background = new JLabel(img);
-        this.getLayeredPane().add(background);
-        background.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-    }
 
 
     public JLabel getScoreLabel() {
@@ -448,4 +475,5 @@ public class GameFrame extends JFrame implements Serializable {
     public void setTimeLabel(JLabel timeLabel) {
         this.timeLabel = timeLabel;
     }
+
 }

@@ -20,6 +20,7 @@ public class GamePanel extends ListenerPanel implements Serializable {
     private JLabel scoreLabel;
     private JLabel timeLabel;
     private int steps;
+    private int time;
     private final int GRID_SIZE;
     public GamePanel(int size) {
         this.setVisible(true);
@@ -81,6 +82,7 @@ public class GamePanel extends ListenerPanel implements Serializable {
 
     public void updateSteps(){
         this.steps=0;
+        this.score=0;
         this.stepLabel.setText(String.format("Step: %d", this.steps));
         this.scoreLabel.setText(String.format("Score: %d", this.score));
     }
@@ -93,27 +95,48 @@ public class GamePanel extends ListenerPanel implements Serializable {
         System.out.println("Click VK_RIGHT");
         score+=this.model.moveRight();
         this.afterMove();
-        if(this.updateGridsNumber())System.exit(0);
+        if(this.updateGridsNumber()){
+            JOptionPane.showMessageDialog(null, "游戏成功！", "2048", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
     public void doMoveLeft() {
         System.out.println("Click VK_LEFT");
         score+=this.model.moveLeft();
         this.afterMove();
-        if(this.updateGridsNumber())System.exit(0);
+        if(this.updateGridsNumber()){
+            JOptionPane.showMessageDialog(null, "游戏成功！", "2048", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
     public void doMoveUp() {
         System.out.println("Click VK_UP");
         score+=this.model.moveUp();
         this.afterMove();
-        if(this.updateGridsNumber())System.exit(0);
+        if(this.updateGridsNumber()){
+            JOptionPane.showMessageDialog(null, "游戏成功！", "2048", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
     public void doMoveDown() {
         System.out.println("Click VK_DOWN");
         score+=this.model.moveDown();
         this.afterMove();
-        if(this.updateGridsNumber())System.exit(0);
+        if(this.updateGridsNumber()){
+            JOptionPane.showMessageDialog(null, "游戏成功！", "2048", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
     public void afterMove() {
+        int f=0;
+        for (int i=0;i<COUNT;++i)
+            for (int j=0;j<COUNT;++j)
+                if(grids[i][j].getNumber()==0)f=1;
+        if(f==0){
+            JOptionPane.showMessageDialog(null, "游戏结束", "2048", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+
         this.steps++;
         this.stepLabel.setText(String.format("Step: %d", this.steps));
         this.scoreLabel.setText(String.format("Score: %d", this.score));
@@ -151,4 +174,12 @@ public class GamePanel extends ListenerPanel implements Serializable {
         return stepLabel;
     }
     public int getSteps(){return steps;}
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
 }
