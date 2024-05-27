@@ -9,6 +9,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GuestGameFrame extends JFrame implements Serializable {
     private static final long serialVersionUID = 6113042624164284648L;
@@ -19,11 +21,28 @@ public class GuestGameFrame extends JFrame implements Serializable {
 
     transient private JLabel stepLabel;
     transient private JLabel scoreLabel;
+    transient private JLabel timeLabel;
     transient private GamePanel gamePanel;
-    private int game_type;
 
+    void clock(int timeLast){
+        java.util.Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            int seconds = timeLast;
+            @Override
+            public void run() {
+                if (seconds > 0) {
+                    timeLabel.setText(String.format("Time:%d", seconds));
+                    seconds--;
+                } else {
+                    System.out.println("时间到！游戏结束。");
+                    timer.cancel();
+                    System.exit(0);
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 1, 1000);
+    }
     public GuestGameFrame(int width, int height,int game_type,int goal,int COUNT) {
-        this.game_type=game_type;
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
         this.setLayout(null);
@@ -38,6 +57,11 @@ public class GuestGameFrame extends JFrame implements Serializable {
 
         this.stepLabel = createLabel("Start", new Font("serif", Font.ITALIC, 22), new Point(480, 0), 180, 50);
         this.scoreLabel = createLabel("Score", new Font("serif", Font.ITALIC, 22), new Point(480, 90), 180, 50);
+        if(game_type==1){
+            this.timeLabel = createLabel("Time", new Font("serif", Font.ITALIC, 22), new Point(480, 180), 180, 50);
+            gamePanel.setTimeLabel(timeLabel);
+            clock(30);
+        }
         gamePanel.setStepLabel(stepLabel);
         gamePanel.setScoreLabel(scoreLabel);
         ImageIcon icon = new ImageIcon("view/icons8-up-arrow-70.png");
