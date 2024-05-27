@@ -22,7 +22,8 @@ public class GameFrame extends JFrame {
     private GamePanel gamePanel;
     int game_type;//0classic 1time 2custom
 
-    public GameFrame(int width, int height, String username,int game_type) {
+
+    public GameFrame(int width, int height, String username) {
 
         this.username = username;
         this.setTitle("2024 CS109 Project Demo");
