@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GamePanel extends ListenerPanel implements Serializable {
     private static final long serialVersionUID = -567330989481496467L;
@@ -16,6 +18,7 @@ public class GamePanel extends ListenerPanel implements Serializable {
     private GridNumber model;
     private JLabel stepLabel;
     private JLabel scoreLabel;
+    private JLabel timeLabel;
     private int steps;
     private final int GRID_SIZE;
     public GamePanel(int size) {
@@ -42,9 +45,8 @@ public class GamePanel extends ListenerPanel implements Serializable {
         this.grids = new GridComponent[COUNT][COUNT];
         this.model = new GridNumber(COUNT, COUNT);
         initialGame();
-
     }
-public void setModel(GridNumber model){
+    public void setModel(GridNumber model){
         this.model=model;
 }
     public GridNumber getModel() {
@@ -139,5 +141,9 @@ public void updateSteps(){
 
     public void setScoreLabel(JLabel scoreLabel) {
         this.scoreLabel = scoreLabel;
+    }
+
+    public void setTimeLabel(JLabel timeLabel) {
+        this.timeLabel = timeLabel;
     }
 }
