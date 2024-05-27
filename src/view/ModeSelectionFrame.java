@@ -36,8 +36,11 @@ public class ModeSelectionFrame extends JFrame {
 
         // 创建单选按钮
         JRadioButton classicModeButton = new JRadioButton("Classic Mode");
+        classicModeButton.setFocusPainted(false);
         JRadioButton timeModeButton = new JRadioButton("Time Mode");
+        timeModeButton.setFocusPainted(false);
         JRadioButton customModeButton = new JRadioButton("Custom Mode");
+        classicModeButton.setFocusPainted(false);
         classicModeButton.setFont(new Font("Arial", Font.PLAIN, 20));
         timeModeButton.setFont(new Font("Arial", Font.PLAIN, 20));
         customModeButton.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -107,16 +110,14 @@ public class ModeSelectionFrame extends JFrame {
         confirmButton.addActionListener(e -> {
             if (classicModeButton.isSelected()) {
                 this.dispose();
-                GameFrame gameFrame = new GameFrame(700, 500, username);
+                GameFrame gameFrame = new GameFrame(700, 500,username,0,2048,4);
                 gameFrame.setVisible(true);
                 // 添加切换到经典模式的逻辑
-            } else if (timeModeButton.isSelected()){
+            }else if (timeModeButton.isSelected()){
                 //限时模式
-
-
-
-
-
+                this.dispose();
+                GameFrame gameFrame = new GameFrame(700, 500,username,1,2048,4);
+                gameFrame.setVisible(true);
             }
             else if (customModeButton.isSelected()) {
                 String gridSizeText = gridSizeField.getText();
@@ -124,6 +125,9 @@ public class ModeSelectionFrame extends JFrame {
                 if (gridSizeText.isEmpty() || targetNumberText.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "请输入大小或目标数字");
                 } else {
+                    this.dispose();
+                    GameFrame gameFrame = new GameFrame(700, 500,username,2,Integer.parseInt(targetNumberText),Integer.parseInt(gridSizeText));
+                    gameFrame.setVisible(true);
                     // 创建自定义的游戏
                 }
             }

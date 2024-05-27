@@ -48,7 +48,7 @@ public class GamePanel extends ListenerPanel implements Serializable {
     }
     public void setModel(GridNumber model){
         this.model=model;
-}
+    }
     public GridNumber getModel() {
         return model;
     }
@@ -79,11 +79,11 @@ public class GamePanel extends ListenerPanel implements Serializable {
         return win;
     }
 
-public void updateSteps(){
-    this.steps=0;
-    this.stepLabel.setText(String.format("Step: %d", this.steps));
-    this.scoreLabel.setText(String.format("Score: %d", this.score));
-}
+    public void updateSteps(){
+        this.steps=0;
+        this.stepLabel.setText(String.format("Step: %d", this.steps));
+        this.scoreLabel.setText(String.format("Score: %d", this.score));
+    }
     /**
      * Implement the abstract method declared in ListenerPanel.
      * Do move right.
@@ -146,4 +146,9 @@ public void updateSteps(){
     public void setTimeLabel(JLabel timeLabel) {
         this.timeLabel = timeLabel;
     }
+
+    public JLabel getStepLabel(){
+        return stepLabel;
+    }
+    public int getSteps(){return steps;}
 }

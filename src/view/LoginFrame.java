@@ -21,47 +21,47 @@ public class LoginFrame extends JFrame {
     }
 
     private void initview() {
-//        try {
-//            image= ImageIO.read(new File("src\\view\\triangle.png"));
-//        }catch (IOException e){
-//            e.getStackTrace();
-//        }
-//        setContentPane(new JPanel(){
-//            @Override
-//            protected void paintComponent(Graphics g){
-//                super.paintComponent(g);
-//                if (image != null) {
-//                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-//                } else {
-//                    // Handle the case when image is null
-//                    g.setColor(Color.RED);
-//                    g.fillRect(0, 0, getWidth(), getHeight());
-//                }
-//            }
-//        });
-        JLabel usernameText = new JLabel("用户名");
-        Font font1 = new Font("宋体", Font.BOLD, 22);
-        usernameText.setFont(font1);
-        usernameText.setLocation(180, 100);
+        try {
+            image= ImageIO.read(new File("src\\view\\triangle.png"));
+        }catch (IOException e){
+            e.getStackTrace();
+        }
+        setContentPane(new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                if (image != null) {
+                    g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // Handle the case when image is null
+                    g.setColor(Color.RED);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        });
+        this.setLayout(null);
+
+        ImageIcon iconl = new ImageIcon("src/view/icons8-user-48.png");
+        JLabel usernameText = new JLabel(iconl);
+        usernameText.setLocation(160, 90);
         usernameText.setSize(100, 100);
         this.getContentPane().add(usernameText);
 
         JTextField username = new JTextField();
-        username.setLocation(280, 138);
-        username.setSize(250, 30);
+        username.setLocation(260, 128);
+        username.setSize(250, 35);
         this.getContentPane().add(username);
 
-        JLabel passwordText = new JLabel("密码");
-        Font font2 = new Font("宋体", Font.BOLD, 22);
-        passwordText.setFont(font2);
-        passwordText.setLocation(180, 150);
+        ImageIcon iconp = new ImageIcon("src/view/icons8-password-50.png");
+        JLabel passwordText = new JLabel(iconp);
+        passwordText.setLocation(160, 160);
         passwordText.setSize(100, 100);
         this.getContentPane().add(passwordText);
 
 
         JPasswordField password = new JPasswordField();
-        password.setLocation(280, 185);
-        password.setSize(250, 30);
+        password.setLocation(260, 195);
+        password.setSize(250, 35);
         this.getContentPane().add(password);
 
         //登录

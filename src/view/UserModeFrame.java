@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class UserModeFrame extends JFrame {
     public String username;
@@ -35,10 +37,12 @@ public class UserModeFrame extends JFrame {
         JButton newGameButton = new JButton(icon);
         newGameButton.setContentAreaFilled(false);
         newGameButton.setBorderPainted(false);
+        newGameButton.setFocusPainted(false);
         ImageIcon icon1 = new ImageIcon("src\\view\\icons8-next-page-100.png");  // 替换为实际图标路径
         JButton continueGameButton = new JButton(icon1);
         continueGameButton.setContentAreaFilled(false);
         continueGameButton.setBorderPainted(false);
+        continueGameButton.setFocusPainted(false);
 
         panel.add(newGameButton);
         panel.add(continueGameButton);
@@ -50,13 +54,24 @@ public class UserModeFrame extends JFrame {
             modeSelectionFrame.setVisible(true);
         });
 
-        continueGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        continueGameButton.addActionListener(e -> {
 
+                ObjectInputStream ois = null;
+                try {
+                    ois = new ObjectInputStream(new FileInputStream("src\\"+username+".txt"));
+                    GamePanel gamePanel1 = (GamePanel) ois.readObject();
+                    ois.close();
+                    GameFrame gameFrame = new GameFrame(700, 500, username, gamePanel1,0,2048,4);
+                    gameFrame.setVisible(true);
+                    this.dispose();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
                 // 这里可以添加继续游戏的逻辑
-            }
-        });
+
+    });
 
         // 添加面板到框架
         add(panel);
