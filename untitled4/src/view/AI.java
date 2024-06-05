@@ -225,27 +225,27 @@ public class AI {
         int[][] originalBoard = copyBoard();
         moveUp();
         double score = expectimax(8, false);
-        if (score > bestScore) {
+        if (score > bestScore&& !isGameOver()) {
             bestScore = score;
         }
         grids = originalBoard;
         moveDown();
         score = expectimax(8, false);
-        if (score > bestScore) {
+        if (score > bestScore&& !isGameOver()) {
             bestScore = score;
             bestMove = 's';
         }
         grids = originalBoard;
         moveRight();
         score = expectimax(8, false);
-        if (score > bestScore) {
+        if (score > bestScore && !isGameOver()) {
             bestScore = score;
             bestMove = 'd';
         }
         grids = originalBoard;
         moveLeft();
         score = expectimax(8, false);
-        if (score > bestScore) {
+        if (score > bestScore && !isGameOver()) {
             bestScore = score;
             bestMove = 'a';
         }
