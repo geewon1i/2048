@@ -34,7 +34,13 @@ public class AI {
                 diff+=Math.abs(grids[i][j]-grids[i][j-1]);
         for (int i = 0; i < SIZE; i++)
             for (int j = 1; j < SIZE; j++)
+                diff+=Math.abs(grids[j][i]-grids[j-1][i]);
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 1; j < SIZE; j++)
                 if(Math.min(grids[j][i],grids[j-1][i])!=0)diff+=20*Math.max(grids[j][i],grids[j-1][i])/Math.min(grids[j][i],grids[j-1][i]);
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 1; j < SIZE; j++)
+                if(Math.min(grids[i][j],grids[i][j-1])!=0)diff+=20*Math.max(grids[i][j],grids[i][j-1])/Math.min(grids[i][j-1],grids[i][j-1]);
         score += emptyTiles *50;
         score-=30*diff;
         int corner=grids[0][0]+grids[SIZE-1][SIZE-1]+grids[SIZE-1][0]+grids[0][SIZE-1];
