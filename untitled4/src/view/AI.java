@@ -14,12 +14,10 @@ public class AI {
             for (int j=0;j<SIZE;++j)
                 grids[i][j]=gridNumber.getNumber(i,j);
     }
-    public double evaluate() {
+   public double evaluate() {
         int [][]map=new int[SIZE][SIZE];
         double score = 0.0;
         int emptyTiles = 0;
-
-        // 计算基本分数和空瓦片数量
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (grids[i][j] == 0) {
@@ -29,69 +27,28 @@ public class AI {
                 }
             }
         }
-
-        // 计算相邻瓦片差异的平滑性
-        double smoothness = 0.0;
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE - 1; j++) {
-                if (grids[i][j] != 0 && grids[i][j + 1] != 0) {
-                    smoothness -= Math.abs(Math.log(grids[i][j]) / Math.log(2) - Math.log(grids[i][j + 1]) / Math.log(2));
-                }
-                if (grids[j][i] != 0 && grids[j + 1][i] != 0) {
-                    smoothness -= Math.abs(Math.log(grids[j][i]) / Math.log(2) - Math.log(grids[j + 1][i]) / Math.log(2));
-                }
-            }
-        }
-
-        // 计算单调性
-        double monotonicity = 0.0;
-        for (int i = 0; i < SIZE; i++) {
-            double currentRowMonotonicity = 0.0;
-            double currentColMonotonicity = 0.0;
-            for (int j = 0; j < SIZE - 1; j++) {
-                currentRowMonotonicity += Math.log(grids[i][j] + 1) / Math.log(2) - Math.log(grids[i][j + 1] + 1) / Math.log(2);
-                currentColMonotonicity += Math.log(grids[j][i] + 1) / Math.log(2) - Math.log(grids[j + 1][i] + 1) / Math.log(2);
-            }
-            monotonicity += Math.abs(currentRowMonotonicity) + Math.abs(currentColMonotonicity);
-        }
-
-        // 计算角落瓦片的奖励
-        double cornerBonus = 0.0;
-        int[] cornerTiles = {
-                grids[0][0],
-                grids[0][SIZE - 1],
-                grids[SIZE - 1][0],
-                grids[SIZE - 1][SIZE - 1]
-        };
-        for (int tile : cornerTiles) {
-            cornerBonus += Math.log(tile + 1) / Math.log(2);
-        }
-
-        // 计算聚集度
-        double clusteredness = 0.0;
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (grids[i][j] != 0) {
-                    if (i < SIZE - 1 && grids[i + 1][j] != 0) {
-                        clusteredness -= Math.abs(Math.log(grids[i][j]) / Math.log(2) - Math.log(grids[i + 1][j]) / Math.log(2));
-                    }
-                    if (j < SIZE - 1 && grids[i][j + 1] != 0) {
-                        clusteredness -= Math.abs(Math.log(grids[i][j]) / Math.log(2) - Math.log(grids[i][j + 1]) / Math.log(2));
-                    }
-                }
-            }
-        }
-
-        // 综合考虑这些因素的权重
-        score += emptyTiles * 50;            // 空瓦片数量的权重
-        score += smoothness * 0.1;           // 平滑性的权重
-        score -= monotonicity * 10.0;        // 单调性的权重（负值表示单调性越高得分越高）
-        score += cornerBonus * 100;          // 角落瓦片的奖励权重
-        score += clusteredness * 0.5;        // 聚集度的权重
-
+        int diff=0;
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 1; j < SIZE; j++)
+                diff+=Math.abs(grids[i][j]-grids[i][j-1]);
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 1; j < SIZE; j++)
+                diff+=Math.abs(grids[j][i]-grids[j-1][i]);
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 1; j < SIZE; j++)
+                if(Math.min(grids[j][i],grids[j-1][i])!=0)diff+=20*Math.max(grids[j][i],grids[j-1][i])/Math.min(grids[j][i],grids[j-1][i]);
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 1; j < SIZE; j++)
+                if(Math.min(grids[i][j],grids[i][j-1])!=0)diff+=20*Math.max(grids[i][j],grids[i][j-1])/Math.min(grids[i][j-1],grids[i][j-1]);
+        score += emptyTiles *50;
+        score-=30*diff;
+        int corner=grids[0][0]+grids[SIZE-1][SIZE-1]+grids[SIZE-1][0]+grids[0][SIZE-1];
+        score+=100*corner;
+        for (int i=0;i<SIZE;++i)
+            for (int j=0;j<SIZE;++j)
+                score+=Math.pow(2,map[i][j])*grids[i][j];
         return score;
     }
-
     public int [][]copyBoard(){
         int [][]t=new int[SIZE][SIZE];
         for(int i=0;i<SIZE;++i)
