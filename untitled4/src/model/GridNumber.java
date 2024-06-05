@@ -70,10 +70,10 @@ public class GridNumber implements Serializable {
             System.exit(0);
         }
         int i,j,val = 0;
-        switch (random.nextInt(1,3)){
+        switch (random.nextInt(1,10)){
 
-            case 1:val=2;break;
-            case 2:val=4;break;
+            case 10:val=4;break;
+            default:val=2;break;
         }
         while (true){
             i=random.nextInt(X_COUNT);j=random.nextInt(Y_COUNT);
