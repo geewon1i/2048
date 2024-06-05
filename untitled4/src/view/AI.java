@@ -150,9 +150,9 @@ public class AI {
                 for (int j = 0; j < SIZE; j++) {
                     if (grids[i][j] == 0) {
                         grids[i][j] = 2;
-                        totalEval += 0.5 * expectimax(depth - 1, true);
+                        totalEval += 0.9 * expectimax(depth - 1, true);
                         grids[i][j] = 4;
-                        totalEval += 0.5 * expectimax(depth - 1, true);
+                        totalEval += 0.1 * expectimax(depth - 1, true);
                         grids[i][j] = 0;
                         count++;
                     }
