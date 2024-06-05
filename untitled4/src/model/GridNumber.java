@@ -29,34 +29,15 @@ public class GridNumber implements Serializable {
         }
     }
     public boolean check() {
-        for (int i = 0; i < X_COUNT; ++i) {
-            for (int j = 0; j < Y_COUNT; ++j) {
-                if (i != 0 && j != 0 && j != Y_COUNT - 1 && i != X_COUNT - 1) {
-                    if (numbers[i][j] == numbers[i-1][j] || numbers[i][j] == numbers[i+1][j] || numbers[i][j] == numbers[i][j-1] || numbers[i][j] == numbers[i][j+1]) {
-                        return true;
-                    }
-                } else if (i == 0 && j == 0) {
-                    if (numbers[i][j] == numbers[i+1][j] || numbers[i][j] == numbers[i][j+1]) {
-                        return true;
-                    }
-                } else if (i == X_COUNT - 1 && j == 0) {
-                    if (numbers[i][j] == numbers[i-1][j] || numbers[i][j] == numbers[i][j+1]) {
-                        return true;
-                    }
-                } else if (i == 0 && j == Y_COUNT - 1) {
-                    if (numbers[i][j] == numbers[i+1][j] || numbers[i][j] == numbers[i][j-1]) {
-                        return true;
-                    }
-                } else if (i == X_COUNT - 1 && j == Y_COUNT - 1) {
-                    if (numbers[i][j] == numbers[i-1][j]|| numbers[i][j] == numbers[i][j-1]) {
-                        return true;
-                    }
-                }
+        for (int i = 1; i < X_COUNT; ++i)
+            for (int j = 1; j < Y_COUNT; ++j)
+                if(numbers[i][j]==numbers[i][j-1])return false;
 
-            }
+        for (int i = 1; i < X_COUNT; ++i)
+            for (int j = 1; j < Y_COUNT; ++j)
+                if(numbers[i][j]==numbers[i][j-1])return false;
 
-        }
-        return false;
+        return true;
     }
     public void generate(){int f = 0;
         for (int i = 0; i < X_COUNT; ++i)
